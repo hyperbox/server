@@ -1,0 +1,58 @@
+/*
+ * Hyperbox - Virtual Infrastructure Manager
+ * Copyright (C) 2022 Max Dor
+ *
+ * https://apps.kamax.lu/hyperbox
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+
+    // Required for Web Services connectivity in the VirtualBox Java Client
+    // No longer builtin in JRE 11
+    implementation 'javax.xml.ws:jaxws-api:2.3.1'
+    implementation 'com.sun.xml.ws:jaxws-rt:2.3.3'
+    implementation 'dom4j:dom4j:1.6.1'
+
+    implementation files(
+            'vendor/vbox/vboxjws-6.0.jar',
+            'vendor/vbox/vboxjws-6.1.jar'
+    )
+
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation 'org.zeroturnaround:zt-exec:1.12'
+
+    implementation 'io.undertow:undertow-core:2.2.16.Final'
+}
+
+application {
+    mainClass = 'lu.kamax.apps.hbox.HyperboxHttpServer'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

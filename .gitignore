@@ -1,0 +1,12 @@
+# IDEs
+.idea/
+
+# Build
+.gradle/
+build/
+out/
+lib/
+
+# Temp/Run files
+/data/
+/vendor/
