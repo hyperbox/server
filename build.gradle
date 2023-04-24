@@ -27,8 +27,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-
     // Required for Web Services connectivity in the VirtualBox Java Client
     // No longer builtin in JRE 11
     implementation 'javax.xml.ws:jaxws-api:2.3.1'
@@ -46,13 +44,9 @@ dependencies {
     implementation 'com.google.guava:guava:31.0.1-jre'
     implementation 'org.zeroturnaround:zt-exec:1.12'
 
-    implementation 'io.undertow:undertow-core:2.2.16.Final'
+    implementation 'io.undertow:undertow-core:2.2.22.Final'
 }
 
 application {
     mainClass = 'lu.kamax.apps.hbox.HyperboxHttpServer'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }

@@ -86,7 +86,38 @@ public class VBoxMachine implements VMachine {
 
     @Override
     public Integer powerOff() {
-        return null;
+        ISession session = mgr.getSessionObject();
+        try {
+            vm.lockMachine(session, LockType.Shared);
+            IProgress p = session.getConsole().powerDown();
+            while (!p.getCompleted() && !p.getCanceled()) {
+                try {
+                    log.info("Saving state progress: {}% - Time remaining: {} - Completed: {} - Cancelled: {}",
+                      p.getPercent(),
+                      p.getTimeRemaining(),
+                      p.getCompleted(),
+                      p.getCanceled());
+                    synchronized (this) {
+                        wait(500);
+                    }
+                } catch (InterruptedException e) {
+                    //
+                }
+            }
+
+            log.info("Power On completed: {}% - Time remaining: {} - Completed: {} - Cancelled: {}",
+              p.getPercent(),
+              p.getTimeRemaining(),
+              p.getCompleted(),
+              p.getCanceled());
+
+            return p.getResultCode();
+        } finally {
+            if (session.getState().equals(SessionState.Locked)) {
+                session.unlockMachine();
+            }
+            session.releaseRemote();
+        }
     }
 
     @Override
